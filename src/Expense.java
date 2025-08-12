@@ -1,4 +1,3 @@
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,7 +21,7 @@ public class Expense {
     /**
      * Attribute that represents the amount of the expense.
      */
-    private BigDecimal amount;
+    private Double amount;
 
     /**
      * Attribute that represents the date of the expense.
@@ -41,7 +40,7 @@ public class Expense {
 
     // ---- CONSTRUCTOR ----
     // If category is indicated
-    public Expense (String description, BigDecimal amount, Category category) {
+    public Expense (String description, Double amount, String category) {
         if(description == null || amount == null || category == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
         }
@@ -50,13 +49,14 @@ public class Expense {
         this.amount = amount;
         this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         this.descritpion = description;
-        this.category = category;
+        
+        setCategory(category);
 
         nextId++;
     }
 
     // If category is not indicated
-    public Expense (String description, BigDecimal amount) {
+    public Expense (String description, Double amount) {
         if(description == null || amount == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
         }
@@ -65,7 +65,7 @@ public class Expense {
         this.amount = amount;
         this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         this.descritpion = description;
-        this.category = Category.GENERAL;
+        setCategory("General");
 
         nextId++;
     }
@@ -75,11 +75,11 @@ public class Expense {
         return id;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -103,8 +103,32 @@ public class Expense {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+        category = category.trim().toUpperCase();
+
+        switch (category) {
+            case "GENERAL":
+                this.category = Category.GENERAL;
+                break;
+            case "FOOD":
+                this.category = Category.FOOD;
+                break;
+            case "ENTERTAINMENT":
+                this.category = Category.ENTERTAINMENT;
+                break;
+            case "HEALTH":
+                this.category = Category.HEALTH;
+                break;
+            case "SHOPPING":
+                this.category = Category.SHOPPING;
+                break;
+            case "BILLS":
+                this.category = Category.BILLS;
+                break;
+            default:
+                this.category = Category.GENERAL;
+                break;
+        }
     }
 
     // ---- COMPARE ----
