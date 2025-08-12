@@ -37,11 +37,11 @@ public class Expense {
     /**
      * Attribute that represents the category of the expense
      */
-    private String category;
+    private Category category;
 
     // ---- CONSTRUCTOR ----
     // If category is indicated
-    public Expense (String description, BigDecimal amount, String category) {
+    public Expense (String description, BigDecimal amount, Category category) {
         if(description == null || amount == null || category == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
         }
@@ -65,7 +65,7 @@ public class Expense {
         this.amount = amount;
         this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         this.descritpion = description;
-        this.category = "General"; // TO-DO - Category ENUM
+        this.category = Category.GENERAL;
 
         nextId++;
     }
@@ -99,11 +99,11 @@ public class Expense {
         this.descritpion = descritpion;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
