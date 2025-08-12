@@ -1,3 +1,132 @@
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Individual expense of the expense tracker
+ */
+
 public class Expense {
-    
+
+    // ---- ATTRIBUTES ----
+    /**
+     * Attribute that represents the expense id.
+     */
+    private int id;
+
+    /**
+     * Attribute that represents the next expense id.
+     */
+    private static int nextId = 1;
+
+    /**
+     * Attribute that represents the amount of the expense.
+     */
+    private BigDecimal amount;
+
+    /**
+     * Attribute that represents the date of the expense.
+     */
+    private String date;
+
+    /**
+     * Attribute that represents the description of the expense
+     */
+    private String descritpion;
+
+    /**
+     * Attribute that represents the category of the expense
+     */
+    private String category;
+
+    // ---- CONSTRUCTOR ----
+    // If category is indicated
+    public Expense (String description, BigDecimal amount, String category) {
+        if(description == null || amount == null || category == null) {
+            throw new IllegalArgumentException("Description or amount argument is missing.");
+        }
+
+        this.id = nextId;
+        this.amount = amount;
+        this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.descritpion = description;
+        this.category = category;
+
+        nextId++;
+    }
+
+    // If category is not indicated
+    public Expense (String description, BigDecimal amount) {
+        if(description == null || amount == null) {
+            throw new IllegalArgumentException("Description or amount argument is missing.");
+        }
+
+        this.id = nextId;
+        this.amount = amount;
+        this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.descritpion = description;
+        this.category = "General"; // TO-DO - Category ENUM
+
+        nextId++;
+    }
+
+    // GETTERS + SETTERS
+    public int getId() {
+        return id;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDescritpion() {
+        return descritpion;
+    }
+
+    public void setDescritpion(String descritpion) {
+        this.descritpion = descritpion;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    // ---- COMPARE ----
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Expense expense = (Expense) obj;
+        return id == expense.id &&
+               amount.equals(expense.amount) &&
+               date.equals(expense.date) &&
+               descritpion.equals(expense.descritpion) &&
+               category.equals(expense.category);
+    }
+
+    // ---- PRINT ----
+    @Override
+    public String toString() { 
+        return "ID: " + id + 
+                "\nDescription: " + descritpion +
+                "\nAmount: " + amount +
+                "\nCategory: " + category +
+                "\nDate: " + date; 
+    }
 }
