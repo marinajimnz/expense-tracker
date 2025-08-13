@@ -5,8 +5,8 @@ public class App {
         
         if (args.length < 1) {
             throw new IllegalArgumentException("Use:\n" +
-                "  add <desc> <monto> [categoria]\n" +
-                "  update <id> <desc|null> <monto|null> <categoria|null>\n" +
+                "  add <description> <amount> [category]\n" +
+                "  update <id> <descriptionesc|null> <amount|null> <category|null>\n" +
                 "  delete <id>\n" +
                 "  list-<general|food|entertainment|health|shopping|bills>\n" +
                 "  list-all");
@@ -17,7 +17,7 @@ public class App {
         switch (command) {
             case "add":
                 if (args.length < 3) {
-                    throw new IllegalArgumentException("Uso: add <desc> <monto> [categoria]");
+                    throw new IllegalArgumentException("Use: add <description> <amount> [category]");
                 }
                 String desc = args[1];
                 Double amount = Double.parseDouble(args[2]);
