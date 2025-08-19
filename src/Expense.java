@@ -156,7 +156,7 @@ public class Expense {
                 "\"description\": \"%s\",\n" +
                 "\"amount\": \"%f\",\n" +
                 "\"category\": \"%s\",\n" +
-                "\"date\": \"%s\",\n" +
+                "\"date\": \"%s\n" +
                 "}",
                 id, description, amount, category, date);
     }
