@@ -154,9 +154,9 @@ public class Expense {
         return String.format("{\n" +
                 "\"id\": %d,\n" +
                 "\"description\": \"%s\",\n" +
-                "\"amount\": \"%f\",\n" +
+                "\"amount\": \"%.2f\",\n" +
                 "\"category\": \"%s\",\n" +
-                "\"date\": \"%s\n" +
+                "\"date\": \"%s\"\n" +
                 "}",
                 id, description, amount, category, date);
     }
@@ -184,9 +184,9 @@ public class Expense {
 
         // Error handling if JSON elements are different from 5, which are the
         // Task attributes.
-        if (elements.length != 5) {
-            throw new IllegalArgumentException("Invalid number of elements, must be 5.");
-        }
+        //if (elements.length != 5) {
+            //throw new IllegalArgumentException("Invalid number of elements, must be 5.");
+        //}
 
         String id = "";
         String description = "";
