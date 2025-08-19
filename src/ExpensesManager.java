@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -37,12 +38,12 @@ public class ExpensesManager {
      * 
      * @param description
      * @param amount
-     * @param category Can be null
+     * @param category    Can be null
      * 
      */
     public void addExpense(String description, Double amount, String category) {
         Expense newExpense;
-        if(category != null) {
+        if (category != null) {
             newExpense = new Expense(description, amount, category);
         } else {
             newExpense = new Expense(description, amount, category);
@@ -60,7 +61,7 @@ public class ExpensesManager {
     public void deleteExpense(int id) {
         Expense expenseToDelete = getExpenseById(id);
 
-        if(expenseToDelete != null) {
+        if (expenseToDelete != null) {
             expenses.remove(expenseToDelete);
             saveExpenses();
             System.out.println("Expense with id " + id + " deleted successfully");
@@ -70,39 +71,43 @@ public class ExpensesManager {
     }
 
     public void updateExpense(int id, String description, Double amount, String category) {
-        // Validation: the parameters couldn't be all null
-        if(Stream.of(description,amount,category).allMatch(null)) { // Stream used to avoid many "OR" statements
-            throw new IllegalArgumentException("At least one parameter should be submitted.");
+        // Validate: not all fields can be null (otherwise nothing to update)
+        if (Stream.of(description, amount, category).allMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("At least one parameter must be provided.");
         }
 
-        Expense expense = Optional.ofNullable(getExpenseById(id)) // Optional works as a container that couldn't be null
-            .orElseThrow(() -> new RuntimeException("The expense with id: " + id + " could'n be found."));
+        // Fetch the expense or fail fast if it doesn't exist
+        Expense expense = Optional.ofNullable(getExpenseById(id))
+                .orElseThrow(() -> new IllegalArgumentException("Expense with id " + id + " not found."));
 
+        // Update only non-null fields (null means 'no change')
         Optional.ofNullable(description).ifPresent(expense::setDescription);
         Optional.ofNullable(amount).ifPresent(expense::setAmount);
         Optional.ofNullable(category).ifPresent(expense::setCategory);
-        
-        System.out.println("Expense with id " + id + " updated successfully");
+
+        // Persist changes
         saveExpenses();
+        System.out.println("Expense with id " + id + " updated successfully");
     }
 
     public void listAll() {
-        for(Expense expense : expenses) {
-            System.out.println(expense.toString());;
+        for (Expense expense : expenses) {
+            System.out.println(expense.toString());
+            ;
         }
     }
 
     public void listCategory(Category category) {
-        for(Expense expense : expenses) {
-            if(expense.getCategory().equals(category)) {
+        for (Expense expense : expenses) {
+            if (expense.getCategory().equals(category)) {
                 System.out.println(expense.toString());
             }
         }
     }
 
     public Expense getExpenseById(int id) {
-        for(Expense expense : expenses) {
-            if(expense.getId() == id) {
+        for (Expense expense : expenses) {
+            if (expense.getId() == id) {
                 return expense;
             }
         }
@@ -158,8 +163,9 @@ public class ExpensesManager {
             jsonExpenses.add(expense.toJson());
         }
 
-        String jsonContent = "[\n" + String.join(",\n", jsonExpenses) + "\n]"; // Adds brackets at the beginning and end of
-                                                                            // the JSON
+        String jsonContent = "[\n" + String.join(",\n", jsonExpenses) + "\n]"; // Adds brackets at the beginning and end
+                                                                               // of
+                                                                               // the JSON
 
         try { // Attempts to write to the file
             Files.writeString(FILE_PATH, jsonContent);
