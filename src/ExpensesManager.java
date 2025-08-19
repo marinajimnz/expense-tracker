@@ -55,8 +55,9 @@ public class ExpensesManager {
     }
 
     /**
-     * Delete an expense by ID
+     * Deletes an expense by ID
      * 
+     * @param id
      */
     public void deleteExpense(int id) {
         Expense expenseToDelete = getExpenseById(id);
@@ -70,6 +71,14 @@ public class ExpensesManager {
         }
     }
 
+    /**
+     * Updates the expense taking into account the fields that are not null by the time
+     * the user calls the method. Finds the expense to update by its ID.
+     * @param id 
+     * @param description
+     * @param amount
+     * @param category
+     */
     public void updateExpense(int id, String description, Double amount, String category) {
         // Validate: not all fields can be null (otherwise nothing to update)
         if (Stream.of(description, amount, category).allMatch(Objects::isNull)) {
@@ -90,6 +99,9 @@ public class ExpensesManager {
         System.out.println("Expense with id " + id + " updated successfully");
     }
 
+    /**
+     * Lists all the expenses saved at the JSON file.
+     */
     public void listAll() {
         for (Expense expense : expenses) {
             System.out.println(expense.toString());
@@ -97,6 +109,11 @@ public class ExpensesManager {
         }
     }
 
+    /**
+     * Lists all the expenses saved at the JSON file with the indicated category.
+     * 
+     * @param category
+     */
     public void listCategory(Category category) {
         for (Expense expense : expenses) {
             if (expense.getCategory().equals(category)) {
@@ -105,6 +122,9 @@ public class ExpensesManager {
         }
     }
 
+    /**
+     * Finds the expense with the indicated id to be used at other methods.
+     */
     public Expense getExpenseById(int id) {
         for (Expense expense : expenses) {
             if (expense.getId() == id) {
@@ -115,6 +135,10 @@ public class ExpensesManager {
         return null;
     }
 
+    /**
+     * Reads all the expenses saved at the JSON file and return them as a list. 
+     * @return expenseList
+     */
     public ArrayList<Expense> loadExpenses() {
         ArrayList<Expense> expensesList = new ArrayList<>();
 

@@ -42,7 +42,9 @@ public class Expense {
     private Category category;
 
     // ---- CONSTRUCTOR ----
-    // If category is indicated
+    /**
+     * If category is indicated
+     */ 
     public Expense(String description, Double amount, String category) {
         if (description == null || amount == null || category == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
@@ -58,7 +60,9 @@ public class Expense {
         nextId++;
     }
 
-    // If category is not indicated
+    /**
+     * If category is not indicated
+     */ 
     public Expense(String description, Double amount) {
         if (description == null || amount == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
@@ -73,7 +77,9 @@ public class Expense {
         nextId++;
     }
 
-    // When loaded from JSON
+    /**
+     * When loaded from JSON
+     */ 
     public Expense(int id, String description, Double amount, Category category, String date) {
         if (description == null || amount == null) {
             throw new IllegalArgumentException("Description or amount argument is missing.");
@@ -86,39 +92,72 @@ public class Expense {
         this.category = category;
     }
 
-    // GETTERS + SETTERS
+    // ---- GETTERS + SETTERS ----
+
+    /**
+     * Getter of the attribute id
+     * @return id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Getter of the attribute amount
+     * @return amount
+     */
     public Double getAmount() {
         return amount;
     }
 
+    /**
+     * Setter of the attribute amount
+     */    
     public void setAmount(Double amount) {
         this.amount = amount;
     }
 
+    /**
+     * Getter of the attribute date
+     * @return date
+     */  
     public String getDate() {
         return date;
     }
 
+    /**
+     * Setter of the attribute date
+     */  
     public void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * Getter of the attribute description
+     * @return description
+     */  
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Setter of the attribute description
+     */  
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Getter of the attribute category
+     * @return category
+     */  
     public Category getCategory() {
         return category;
     }
 
+    /**
+     * Setter of the attribute category
+     */  
     public void setCategory(String category) {
         category = category.trim().toUpperCase();
 
@@ -183,12 +222,6 @@ public class Expense {
         // Separates elements by comma (commas inside values between quotes don't).
         String[] elements = jsonFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-        // Error handling if JSON elements are different from 5, which are the
-        // Task attributes.
-        // if (elements.length != 5) {
-        // throw new IllegalArgumentException("Invalid number of elements, must be 5.");
-        // }
-
         String id = "";
         String description = "";
         String amount = "";
@@ -244,6 +277,11 @@ public class Expense {
         return new Expense(expenseId, description, expenseAmount, category, date);
     }
 
+    /**
+     * Parses the amount to Double taking into account that the local language is ES. 
+     * That means that terminal has as decimal divider "." and it is saved as "," at the JSON file.
+     * This method manages the difference.
+     */  
     static double parseAmount(String text) throws ParseException {
         NumberFormat nf = NumberFormat.getInstance(Locale.of("es", "ES"));
         Number n = nf.parse(text.trim());
