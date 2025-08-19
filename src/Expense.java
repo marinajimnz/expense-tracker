@@ -1,5 +1,8 @@
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Individual expense of the expense tracker
@@ -76,13 +79,11 @@ public class Expense {
             throw new IllegalArgumentException("Description or amount argument is missing.");
         }
 
-        this.id = nextId;
+        this.id = id;
         this.amount = amount;
-        this.date = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        this.date = date;
         this.description = description;
-        setCategory("General");
-
-        nextId++;
+        this.category = category;
     }
 
     // GETTERS + SETTERS
@@ -184,9 +185,9 @@ public class Expense {
 
         // Error handling if JSON elements are different from 5, which are the
         // Task attributes.
-        //if (elements.length != 5) {
-            //throw new IllegalArgumentException("Invalid number of elements, must be 5.");
-        //}
+        // if (elements.length != 5) {
+        // throw new IllegalArgumentException("Invalid number of elements, must be 5.");
+        // }
 
         String id = "";
         String description = "";
@@ -219,7 +220,7 @@ public class Expense {
                 case "category":
                     category = Category.valueOf(value.trim().toUpperCase());
                     break;
-                case "createdAt":
+                case "date":
                     date = value;
                     break;
             }
@@ -232,9 +233,21 @@ public class Expense {
         }
 
         // To parse amount to Double
-        double expenseAmount = Double.parseDouble(amount);
+        double expenseAmount = 0;
+        try {
+            expenseAmount = parseAmount(amount);
+        } catch (Exception ParseException) {
+            System.out.println("Couldn't parse the amount.");
+        }
+
 
         return new Expense(expenseId, description, expenseAmount, category, date);
+    }
+
+    static double parseAmount(String text) throws ParseException {
+        NumberFormat nf = NumberFormat.getInstance(Locale.of("es", "ES"));
+        Number n = nf.parse(text.trim());
+        return n.doubleValue();
     }
 
     // ---- COMPARE ----

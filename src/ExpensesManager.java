@@ -49,6 +49,7 @@ public class ExpensesManager {
         }
 
         expenses.add(newExpense);
+        saveExpenses();
         System.out.println(description + " added with the amount: " + amount);
     }
 
@@ -61,6 +62,7 @@ public class ExpensesManager {
 
         if(expenseToDelete != null) {
             expenses.remove(expenseToDelete);
+            saveExpenses();
             System.out.println("Expense with id " + id + " deleted successfully");
         } else {
             System.out.println("ID: " + id + " doesn't exist.");
